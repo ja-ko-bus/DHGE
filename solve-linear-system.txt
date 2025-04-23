@@ -1,0 +1,77 @@
+' Lösung des Gleichungssystems Ax = b mittels Matrixinversion
+
+' Eingabe der Matrix A
+?→A11
+?→A12
+?→A13
+?→A21
+?→A22
+?→A23
+?→A31
+?→A32
+?→A33
+
+' Eingabe des Vektors b
+?→B1
+?→B2
+?→B3
+
+' Berechnung der Determinante von A
+A11*(A22*A33 - A23*A32) - A12*(A21*A33 - A23*A31) + A13*(A21*A32 - A22*A31)→Det
+
+' Überprüfung, ob die Determinante ungleich null ist
+If Det=0 Then
+  Locate 1,1
+  "Matrix ist nicht invertierbar"
+  Stop
+IfEnd
+
+' Berechnung der Kofaktormatrix (C)
+(A22*A33 - A23*A32)→C11
+-(A21*A33 - A23*A31)→C12
+(A21*A32 - A22*A31)→C13
+-(A12*A33 - A13*A32)→C21
+(A11*A33 - A13*A31)→C22
+-(A11*A32 - A12*A31)→C23
+(A12*A23 - A13*A22)→C31
+-(A11*A23 - A13*A21)→C32
+(A11*A22 - A12*A21)→C33
+
+' Transponieren der Kofaktormatrix zur Adjunktenmatrix (Adj)
+C11→Adj11
+C21→Adj12
+C31→Adj13
+C12→Adj21
+C22→Adj22
+C32→Adj23
+C13→Adj31
+C23→Adj32
+C33→Adj33
+
+' Berechnung der Inversen Matrix: A^{-1} = (1/Det) * Adj
+Adj11/Det→Inv11
+Adj12/Det→Inv12
+Adj13/Det→Inv13
+Adj21/Det→Inv21
+Adj22/Det→Inv22
+Adj23/Det→Inv23
+Adj31/Det→Inv31
+Adj32/Det→Inv32
+Adj33/Det→Inv33
+
+' Berechnung der Lösung x = A^{-1} * b
+Inv11*B1 + Inv12*B2 + Inv13*B3→X1
+Inv21*B1 + Inv22*B2 + Inv23*B3→X2
+Inv31*B1 + Inv32*B2 + Inv33*B3→X3
+
+' Ausgabe der Lösung
+Locate 1,1
+"Lösung des Systems:"
+Locate 1,2
+X1▶
+Locate 1,3
+X2▶
+Locate 1,4
+X3▶
+
+Stop

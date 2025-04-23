@@ -1,0 +1,78 @@
+' Lösung eines überbestimmten linearen Gleichungssystems mittels Methode der kleinsten Quadrate
+
+' Eingabe der Dimensionen
+?→M ' Anzahl der Gleichungen (Zeilen von A)
+?→N ' Anzahl der Unbekannten (Spalten von A)
+
+' Eingabe der Matrix A (M x N)
+For I→0 To M-1
+  For J→0 To N-1
+    ?→A[I,J]
+  Next
+Next
+
+' Eingabe des Vektors b (M x 1)
+For I→0 To M-1
+  ?→B[I]
+Next
+
+' Berechnung von A^T * A (N x N)
+For I→0 To N-1
+  For J→0 To N-1
+    0→ATA[I,J]
+    For K→0 To M-1
+      ATA[I,J] + A[K,I]*A[K,J]→ATA[I,J]
+    Next
+  Next
+Next
+
+' Berechnung von A^T * b (N x 1)
+For I→0 To N-1
+  0→ATB[I]
+  For K→0 To M-1
+    ATB[I] + A[K,I]*B[K]→ATB[I]
+  Next
+Next
+
+' Lösung des Gleichungssystems ATA * x = ATB mittels Cholesky-Zerlegung
+
+' Cholesky-Zerlegung von ATA: ATA = L * L^T
+For I→0 To N-1
+  For J→0 To I
+    S→0
+    For K→0 To J-1
+      S + L[I,K]*L[J,K]→S
+    Next
+    If I=J Then
+      √(ATA[I,I] - S)→L[I,J]
+    Else
+      (1 / L[J,J]) * (ATA[I,J] - S)→L[I,J]
+    IfEnd
+  Next
+Next
+
+' Vorwärtseinsetzen: L * y = ATB
+For I→0 To N-1
+  S→0
+  For K→0 To I-1
+    S + L[I,K]*Y[K]→S
+  Next
+  (ATB[I] - S) / L[I,I]→Y[I]
+Next
+
+' Rückwärtseinsetzen: L^T * x = y
+For I→N-1 To 0 Step -1
+  S→0
+  For K→I+1 To N-1
+    S + L[K,I]*X[K]→S
+  Next
+  (Y[I] - S) / L[I,I]→X[I]
+Next
+
+' Ausgabe der Lösung x
+For I→0 To N-1
+  Locate 1, I+1
+  X[I]▶
+Next
+
+Stop

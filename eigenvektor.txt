@@ -1,0 +1,88 @@
+' Berechnung des Eigenvektors zum größten Eigenwert einer 3x3-Matrix
+
+' Eingabe der Matrix A
+?→A[0,0]  ?→A[0,1]  ?→A[0,2]
+?→A[1,0]  ?→A[1,1]  ?→A[1,2]
+?→A[2,0]  ?→A[2,1]  ?→A[2,2]
+
+' Eingabe des approximierten größten Eigenwerts
+?→Lambda
+
+' Berechnung der Matrix (A - Lambda * I)
+For I→0 To 2
+  For J→0 To 2
+    If I=J Then
+      A[I,J] - Lambda→M[I,J]
+    Else
+      A[I,J]→M[I,J]
+    IfEnd
+  Next
+Next
+
+' Lösung des homogenen Gleichungssystems M * v = 0
+' Wir verwenden den Gauss-Jordan-Algorithmus zur Lösung
+
+' Augmentierte Matrix erstellen
+For I→0 To 2
+  For J→0 To 2
+    M[I,J]→Aug[I,J]
+  Next
+  0→Aug[I,3]
+Next
+
+' Gauss-Jordan-Elimination
+For I→0 To 2
+  ' Pivotisierung
+  Aug[I,I]→Pivot
+  If Pivot=0 Then
+    ' Zeilen tauschen, wenn Pivot null ist
+    For K→I+1 To 2
+      If Aug[K,I]≠0 Then
+        For J→0 To 3
+          Aug[I,J]↔Aug[K,J]
+        Next
+        Exit For
+      IfEnd
+    Next
+    Aug[I,I]→Pivot
+  IfEnd
+
+  ' Normierung der Pivotzeile
+  For J→I To 3
+    Aug[I,J]/Pivot→Aug[I,J]
+  Next
+
+  ' Eliminierung der anderen Zeilen
+  For K→0 To 2
+    If K≠I Then
+      Aug[K,I]→Factor
+      For J→I To 3
+        Aug[K,J] - Factor*Aug[I,J]→Aug[K,J]
+      Next
+    IfEnd
+  Next
+Next
+
+' Der Eigenvektor ist die Lösung des homogenen Systems
+' Da das System unendlich viele Lösungen hat, setzen wir eine Variable frei
+1→v[2]
+-v[2]*Aug[2,0]→v[0]
+-v[2]*Aug[2,1]→v[1]
+
+' Normierung des Eigenvektors
+√(v[0]^2 + v[1]^2 + v[2]^2)→Norm
+v[0]/Norm→v[0]
+v[1]/Norm→v[1]
+v[2]/Norm→v[2]
+
+' Ausgabe des Eigenvektors
+Locate 1,1
+"Eigenvektor:"
+Locate 1,2
+v[0]▶
+Locate 1,3
+v[1]▶
+Locate 1,4
+v[2]▶
+
+Stop

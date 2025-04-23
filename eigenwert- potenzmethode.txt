@@ -1,0 +1,55 @@
+' Potenzmethode zur Berechnung des größten Eigenwerts einer 3x3-Matrix
+
+' Eingabe der Matrix A
+?→A[0,0]  ?→A[0,1]  ?→A[0,2]
+?→A[1,0]  ?→A[1,1]  ?→A[1,2]
+?→A[2,0]  ?→A[2,1]  ?→A[2,2]
+
+' Initialisierung des Startvektors x^(0)
+1→X[0]
+1→X[1]
+1→X[2]
+
+' Normierung des Startvektors
+√(X[0]^2 + X[1]^2 + X[2]^2)→Norm
+X[0]/Norm→X[0]
+X[1]/Norm→X[1]
+X[2]/Norm→X[2]
+
+' Anzahl der Iterationen
+10→N
+
+' Iteration
+For K→1 To N
+  ' Matrix-Vektor-Multiplikation: Y = A * X
+  For I→0 To 2
+    0→Y[I]
+    For J→0 To 2
+      Y[I] + A[I,J]*X[J]→Y[I]
+    Next
+  Next
+
+  ' Normierung von Y
+  √(Y[0]^2 + Y[1]^2 + Y[2]^2)→Norm
+  Y[0]/Norm→X[0]
+  Y[1]/Norm→X[1]
+  Y[2]/Norm→X[2]
+Next
+
+' Berechnung des Eigenwerts λ ≈ X^T * A * X
+0→Lambda
+For I→0 To 2
+  0→Temp
+  For J→0 To 2
+    Temp + A[I,J]*X[J]→Temp
+  Next
+  Lambda + X[I]*Temp→Lambda
+Next
+
+' Ausgabe des approximierten Eigenwerts
+Locate 1,1
+"Größter Eigenwert:"
+Locate 1,2
+Lambda▶
+
+Stop

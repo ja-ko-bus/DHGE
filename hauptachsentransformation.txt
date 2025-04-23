@@ -1,0 +1,55 @@
+'Hauptachsentransformation einer 2x2 symmetrischen Matrix
+
+' Eingabe der Matrixelemente
+?→A11
+?→A12
+?→A22
+
+' Berechnung der Eigenwerte
+(A11 + A22)/2→T
+((A11 - A22)/2)^2 + A12^2→D
+T + √D→L1
+T - √D→L2
+
+' Berechnung der Eigenvektoren
+If A12 ≠ 0 Then
+  L1 - A11→V1X
+  A12→V1Y
+  L2 - A11→V2X
+  A12→V2Y
+Else
+  1→V1X
+  0→V1Y
+  0→V2X
+  1→V2Y
+IfEnd
+
+' Normierung der Eigenvektoren
+√(V1X^2 + V1Y^2)→N1
+V1X/N1→Q11
+V1Y/N1→Q21
+
+√(V2X^2 + V2Y^2)→N2
+V2X/N2→Q12
+V2Y/N2→Q22
+
+' Ausgabe der Ergebnisse
+Locate 1,1
+"Eigenwerte:"
+Locate 1,2
+L1▶
+Locate 1,3
+L2▶
+
+Locate 1,5
+"Matrix Q:"
+Locate 1,6
+Q11▶
+Locate 7,6
+Q12▶
+Locate 1,7
+Q21▶
+Locate 7,7
+Q22▶
+
+Stop

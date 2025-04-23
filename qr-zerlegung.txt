@@ -1,0 +1,69 @@
+' QR-Zerlegung einer 3x3-Matrix mit Gram-Schmidt
+
+' Eingabe der Matrix A
+?→A[0,0]  ?→A[0,1]  ?→A[0,2]
+?→A[1,0]  ?→A[1,1]  ?→A[1,2]
+?→A[2,0]  ?→A[2,1]  ?→A[2,2]
+
+' Initialisierung der Matrizen Q und R
+For I→0 To 2
+  For J→0 To 2
+    0→Q[I,J]
+    0→R[I,J]
+  Next
+Next
+
+' Berechnung von Q und R
+For K→0 To 2
+  ' Setze v = Spalte K von A
+  For I→0 To 2
+    A[I,K]→V[I]
+  Next
+
+  ' Subtrahiere Projektionen auf vorherige q-Vektoren
+  For J→0 To K-1
+    0→Dot
+    For I→0 To 2
+      Dot + Q[I,J]*V[I]→Dot
+    Next
+    For I→0 To 2
+      V[I] - Dot*Q[I,J]→V[I]
+    Next
+    Dot→R[J,K]
+  Next
+
+  ' Berechne Norm von v
+  0→Norm
+  For I→0 To 2
+    Norm + V[I]^2→Norm
+  Next
+  √(Norm)→Norm
+
+  ' Normalisiere v zu q_k
+  For I→0 To 2
+    V[I]/Norm→Q[I,K]
+  Next
+  Norm→R[K,K]
+Next
+
+' Ausgabe der Matrix Q
+Locate 1,1
+"Matrix Q:"
+For I→0 To 2
+  For J→0 To 2
+    Locate 1+6*J,2+I
+    Q[I,J]▶
+  Next
+Next
+
+' Ausgabe der Matrix R
+Locate 1,6
+"Matrix R:"
+For I→0 To 2
+  For J→0 To 2
+    Locate 1+6*J,7+I
+    R[I,J]▶
+  Next
+Next
+
+Stop

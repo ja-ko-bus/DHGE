@@ -1,0 +1,65 @@
+' Berechnung der Matrixexponentialfunktion exp(A) für eine 3x3-Matrix
+
+' Eingabe der Matrix A
+?→A[0,0]  ?→A[0,1]  ?→A[0,2]
+?→A[1,0]  ?→A[1,1]  ?→A[1,2]
+?→A[2,0]  ?→A[2,1]  ?→A[2,2]
+
+' Initialisierung der Einheitsmatrix E und Ergebnis-Matrix expA
+For I→0 To 2
+  For J→0 To 2
+    If I=J Then
+      1→E[I,J]
+    Else
+      0→E[I,J]
+    IfEnd
+    E[I,J]→expA[I,J]
+    A[I,J]→P[I,J]
+  Next
+Next
+
+' Berechnung der Potenzreihe bis zum 10. Term
+For N→1 To 10
+  ' Berechnung von A^N
+  For I→0 To 2
+    For J→0 To 2
+      0→S
+      For K→0 To 2
+        S + A[I,K]*P[K,J]→S
+      Next
+      S→T[I,J]
+    Next
+  Next
+
+  ' Aktualisierung von P = A^N
+  For I→0 To 2
+    For J→0 To 2
+      T[I,J]→P[I,J]
+    Next
+  Next
+
+  ' Berechnung von A^N / N!
+  1→F
+  For K→1 To N
+    F*K→F
+  Next
+
+  ' Addition des Terms zu expA
+  For I→0 To 2
+    For J→0 To 2
+      expA[I,J] + P[I,J]/F→expA[I,J]
+    Next
+  Next
+Next
+
+' Ausgabe der Matrix expA
+Locate 1,1
+"Matrix exp(A):"
+For I→0 To 2
+  For J→0 To 2
+    Locate 1+6*J,2+I
+    expA[I,J]▶
+  Next
+Next
+
+Stop

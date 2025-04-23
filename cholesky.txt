@@ -1,0 +1,37 @@
+'CHOLESKY ZERLEGUNG FÜR 3x3-MATRIX
+' Eingabe der Matrix A
+?→A[0,0]  ?→A[0,1]  ?→A[0,2]
+?→A[1,0]  ?→A[1,1]  ?→A[1,2]
+?→A[2,0]  ?→A[2,1]  ?→A[2,2]
+
+' Initialisierung der Matrix L
+For I→0 To 2
+  For J→0 To 2
+    0→L[I,J]
+  Next
+Next
+
+' Berechne Einträge von L
+For I→0 To 2
+  For J→0 To I
+    0→S
+    For K→0 To J-1
+      S + L[I,K]*L[J,K]→S
+    Next
+    If I=J Then
+      √(A[I,I] - S)→L[I,J]
+    Else
+      (A[I,J] - S)/L[J,J]→L[I,J]
+    IfEnd
+  Next
+Next
+
+' Zeige Ergebnis
+For I→0 To 2
+  For J→0 To 2
+    Locate 1+6*J,1+I
+    L[I,J]▶
+  Next
+Next
+
+Stop
